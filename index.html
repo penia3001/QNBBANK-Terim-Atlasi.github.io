@@ -188,7 +188,7 @@
     <div id="game-area" style="display: none;">
         <div id="player-name"></div>
         <div id="skor">Skor: 0</div>
-        <div id="timer">Süre: 12</div>
+        <div id="timer">Süre: 120</div>
         <div id="kelime-anlam"></div>
         <div id="result-message" style="display: none;"></div>
         <div class="options">
@@ -216,7 +216,7 @@
         let users = [];
         let currentPlayerIndex = 0;
         let score = 0;
-        let time = 12;
+        let time = 120;
         let interval;
         let activeWord;
         let answerStartTime;
@@ -397,7 +397,7 @@
             const currentUser = users[currentPlayerIndex];
             document.getElementById("player-name").innerText = `ŞUANDA OYNAYAN OYUNCU: ${currentUser.name}`;
             score = 0;
-            time = 12;
+            time = 120;
             document.getElementById("skor").innerText = `Skor: ${score}`;
             document.getElementById("timer").innerText = `Süre: ${time}`;
             generateQuestion();

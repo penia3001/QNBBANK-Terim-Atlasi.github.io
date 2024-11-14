@@ -188,7 +188,7 @@
     <div id="game-area" style="display: none;">
         <div id="player-name"></div>
         <div id="skor">Skor: 0</div>
-        <div id="timer">Süre: 200</div>
+        <div id="timer">Süre: 210</div>
         <div id="kelime-anlam"></div>
         <div id="result-message" style="display: none;"></div>
         <div class="options">
@@ -216,7 +216,7 @@
         let users = [];
         let currentPlayerIndex = 0;
         let score = 0;
-        let time = 200;
+        let time = 210;
         let interval;
         let activeWord;
         let answerStartTime;
@@ -224,6 +224,9 @@
         const wordBank = [
             { "word": "debit", "meaning": "Banka hesabından yapılan para çıkış işlemi." },
             { "word": "enflasyon", "meaning": "Genel fiyat seviyesindeki sürekli artış oranı." },
+            { "word": "temettü", "meaning": "Hisse senedi sahiplerine, şirketin karından dağıtılan ödeme." },
+            { "word": "(APR)", "meaning": "Bir kredi ürününün toplam maliyetini yıllık olarak ifade eden oran." },
+            { "word": "hazine bonosu", "meaning": "Devletin kısa vadeli borçlanma aracı." },
             { "word": "vadesiz hesap", "meaning": "Faiz getirisi olmayan banka hesabı türü." },
             { "word":"temerrüt","meaning":"Bir borçlunun, ödeme yükümlülüğünü yerine getirememesi ve borcun ödenmemesi durumudur." },
             { "word":"icra takibi","meaning":"Ödenmeyen borçların tahsil edilmesi amacıyla başlatılan yasal süreçtir." },
@@ -247,6 +250,8 @@
             { "word": "Finansal İstikrar", "meaning": "Ekonomik sistemdeki dengelerin bozulmadan sürdürülebilmesi durumu." },
             { "word": "Yükümlülük Yönetimi", "meaning": "Birikmiş olan borçların veya ödemelerin etkin bir şekilde yönetilmesi." },
             { "word": "Portföy Çeşitlendirmesi", "meaning": "Riskin azaltılması için yatırım araçlarının farklı alanlara yayılması." },
+            { "word": "finansal kaldıraç", "meaning": "Bir yatırımın borçla finanse edilmesiyle elde edilen ek getiri oranı." },
+            { "word": "işlem hacmi", "meaning": "Bir pazarda belirli bir zaman diliminde gerçekleşen alım-satım işlemlerinin toplam değeri." },
             { "word": "Yatırım Bankacılığı", "meaning": "Bireysel ve kurumsal müşterilere finansal danışmanlık ve yatırım hizmeti sağlayan banka faaliyetleri." },
             { "word": "Kredi Teminatlı Menkul Kıymetler (CMO)", "meaning": "Kredi alacaklarından türetilmiş ve yatırımcılar için gelir getiren finansal araçlar." },
             { "word": "Aktif/Pasif Yönetimi", "meaning": "Bir işletmenin kaynaklarının etkin kullanımı ve borçlarının yönetilmesi." },
@@ -261,6 +266,9 @@
             { "word": "İç Kontrol", "meaning": "Kuruluşların riskleri yönetebilmek için geliştirdiği sistematik önlemler." },
             { "word": "Finansal Enstrüman", "meaning": "Yatırım yapılabilir değerler ve ticaret araçlarını içeren genel kavram." },
             { "word": "Mali Analiz", "meaning": "Bir organizasyonun finansal durumunun incelenmesi ve değerlendirilmesi." },
+            { "word": "borsa", "meaning": "Menkul kıymetlerin alınıp satıldığı yer." },
+            { "word": "volatilite", "meaning": "Bir finansal enstrümanın fiyatının zaman içinde ne kadar değişebileceği." },
+            { "word": "arbitraj", "meaning": "Farklı piyasalarda fiyat farklılıklarından yararlanarak kar sağlama işlemi." },
             { "word": "Döviz Swapı", "meaning": "Farklı para birimlerinin belirli bir süre için takas edilmesi işlemi nokta noktadır." },
             { "word": "Yatırım Fonları", "meaning": "Bir grup kişinin parasının birleştirilip uzmanlarca yönetildiği ortak havuzdur." },
             { "word": "İpotekli Menkul Kıymetler", "meaning": "Borçların geri ödenmesini güvence altına almak için teminat gösterilen finansal ürünlerdir." },
@@ -295,6 +303,7 @@
             { "word":"ödeme taktikeri","meaning":"Bir borcun ödenmesi sırasında uygulanan stratejik yöntemleri ve adımları belirleyen kişidir." },
             { "word":"teminat mektubu","meaning":"Yükümlülük yerine getirilmezse ödeme garantisi veren belgedir." },
             { "word":"ipotek","meaning":"Bir borç karşılığında gayrimenkulün güvence olarak gösterilmesidir." },
+            { "word": "SWIFT(Society for Worldwide Interbank Financial Telecommunication", "meaning": "Uluslararası banka transferlerinin güvenli bir şekilde yapılmasını sağlayan sistem." },
             { "word": "vade", "meaning": "Bir borcun ödenmesi gereken süre." },
             { "word": "mevduat", "meaning": "Bireylerin, finansal kuruluşlarda tutmak üzere yatırdıkları paradır." },
             { "word": "faiz marjı", "meaning": "Bir finansal kuruluşun kredi ve mevduat faiz oranları arasındaki farktır." },
@@ -311,8 +320,8 @@
             { "word": "şube içi işlem", "meaning": "Aynı finansal kuruluşun farklı birimleri arasında yapılan para transferleri ve hesap işlemlerine denir." },
             { "word": "kredi notu", "meaning": "Bir bireyin veya işletmenin kredi geçmişine dayalı olarak belirlenen ödeme güvenilirliğini gösteren puan." },
             { "word": "kredi sigortası", "meaning": "Bir borcun ödenmemesi durumunda sigorta şirketi tarafından ödeme yapılmasını sağlayan sigorta türü." },
-            { "word": "portföy dağılımı", "meaning": "Yatırımların riskin azaltılması amacıyla farklı araçlar arasında paylaştırılmasıdır." },
-            { "word": "kar payı", "meaning": "Bir şirketin ortaklarına, elde edilen kârın dağıtılan kısmı." },
+            { "word": "kar payı", "meaning": "Bankaların veya şirketlerin, yatırımcılara yıllık olarak dağıttığı gelir." },
+            { "word": "türev ürünler", "meaning": "Değerini başka bir finansal üründen alan, risk yönetimi veya spekülasyon amaçlı kullanılan finansal araçlar." },
             { "word": "operasyon birimi", "meaning": "Bir bankanın işlem, uygulama ve faaliyetlerini yöneten ve stratejik kararlar alan organizasyondur." },
             { "word": "banka kartı", "meaning": "Bir finansal hesapla bağlantılı olarak ödeme yapmak veya para çekmek için kullanılan bir ... dır." },
             { "word": "basit faiz", "meaning": "Ana paraya uygulanan orana dayalı kazanç." },
@@ -324,6 +333,7 @@
             { "word": "gayrimenkul teminatı", "meaning": "Bir borcun güvence altına alınması için taşınmaz malın gösterilmesi." },
             { "word": "interbank işlem", "meaning": "Birden fazla finansal kurum arasında yapılan para transferi veya ticaret işlemleri." },
             { "word": "karar destek sistemi", "meaning": "Yönetim sürecinde seçeneklerin değerlendirilmesine yardımcı olan araçlar ve analizler." },
+            { "word": "reeskont", "meaning": "Bankaların, vadesi gelmemiş senetleri, merkez bankası veya diğer bankalar ile yeniden düzenleyerek satması işlemi." },
             { "word": "kredi ödeme süresi", "meaning": "Borçlunun krediyi geri ödeme süresi." },
             { "word": "kredi talepleri", "meaning": "Bir finansal kuruluştan borç almak için yapılan başvurular." },
             { "word": "likidite oranı", "meaning": "Bir kuruluşun kısa vadeli borçlarını ödeme kapasitesi." },
@@ -341,6 +351,17 @@
             { "word": "Aktif/Pasif Yönetimi", "meaning": "Finansal kaynaklar ve yükümlülüklerin dengeli yönetimi." },
             { "word": "Kredi Teminatı", "meaning": "Borç için sağlanan güvence." },
             { "word": "Dış Ticaret Kredisi", "meaning": "Uluslararası işlemler için sağlanan finansman." },
+            { "word": "virman", "meaning": "Aynı banka içinde hesaplar arasında yapılan para transferi." },
+            { "word": "dijital bankacılık", "meaning": "Bankacılık hizmetlerinin internet ve mobil uygulamalar üzerinden sağlanması." },
+            { "word": "kredi temerrüt swapi(CSS)", "meaning": "Borçlanma riskine karşı sigorta sağlayan finansal ürün" },
+            { "word": "borsa yatırım fonu(ETF)", "meaning": "Hisse senetleri gibi işlem gören, genellikle belirli bir endeksi izleyen yatırım fonları." },
+            { "word": "içsel değer", "meaning": "Bir opsiyonun piyasa fiyatı ile gerçek değeri arasındaki fark." },
+            { "word": "tahvil", "meaning": "Devlet veya şirketler tarafından çıkarılan, belirli bir faiz oranı üzerinden borçlanmayı sağlayan menkul kıymet." },
+            { "word": "swap", "meaning": "İki taraf arasında gelecekteki nakit akışlarını değiştirmeyi içeren, genellikle döviz veya faiz oranı gibi anlaşmalar." },
+            { "word": "ticari banka", "meaning": "Genel halk ve işletmeler için finansal hizmetler sunan ve genellikle mevduat kabul eden finans kurumu." },
+            { "word": "çek", "meaning": "Bir kişi veya kuruluş tarafından, belirli bir miktar paranın ödenmesi talimatı veren ödeme aracıdır." },
+            { "word": "sermaye yeterlilik oranı(CAR)", "meaning": "Bir bankanın finansal gücünü gösteren, banka sermayesinin riskli varlıklara oranını belirten bir göstergedir." },
+            { "word": "repo(Reverse Repo)", "meaning": "Kısa vadeli bir borçlanma aracı, bir menkul kıymetin satılması ve belirli bir süre sonra geri alınması işlemi." },
             { "word": "Kredi Tutarı", "meaning": "Verilen veya alınan borcun miktarı." },
             { "word": "Varlık Yönetimi", "meaning": "Yatırımların doğru şekilde yönlendirilmesi." },
             { "word": "Birikimli Faiz", "meaning": "Faizlerin zamanla artarak birikmesi." },
@@ -397,7 +418,7 @@
             const currentUser = users[currentPlayerIndex];
             document.getElementById("player-name").innerText = `ŞUANDA OYNAYAN OYUNCU: ${currentUser.name}`;
             score = 0;
-            time = 200;
+            time = 210;
             document.getElementById("skor").innerText = `Skor: ${score}`;
             document.getElementById("timer").innerText = `Süre: ${time}`;
             generateQuestion();
@@ -452,9 +473,9 @@
         }
 
         function calculateScoreBasedOnTime(timeTaken) {
-            if (timeTaken <= 15) return 10;
-            if (timeTaken <= 25) return 5;
-            return 1;
+            if (timeTaken <= 5) return 10;
+            if (timeTaken <= 10) return 5;
+            return 2;
         }
 
         function resetOptionStyles() {
